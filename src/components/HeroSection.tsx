@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Play, Star, ArrowRight, Zap, Shield, Clock } from 'lucide-react';
-import swiftHeroImage from '@/assets/swift-2025-hero.jpg';
+import premiumSwiftToy from '@/assets/premium-swift-toy.jpg';
 
 const HeroSection = () => {
   return (
@@ -13,22 +13,22 @@ const HeroSection = () => {
       <div className="container mx-auto px-6 py-20 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <div className="space-y-8 animate-scale-in">
+          <div className="space-y-8 animate-scale-luxury">
             {/* Badge */}
-            <div className="inline-flex items-center glass px-4 py-2 rounded-full">
+            <div className="inline-flex items-center glass px-6 py-3 rounded-full animate-luxury-float">
               <Star className="w-4 h-4 text-accent mr-2" />
-              <span className="text-sm font-medium">Premium Car Rental Experience</span>
+              <span className="text-sm font-medium">CRED-Level Premium Experience</span>
             </div>
 
             {/* Headline */}
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                Drive the Future with{' '}
-                <span className="text-premium">2025 Swift</span>
+                Experience Premium{' '}
+                <span className="text-premium">Mobility</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-lg leading-relaxed">
-                Experience premium mobility with our latest 2025 Suzuki Swift. 
-                Sleek design meets cutting-edge technology for the perfect ride.
+                Where luxury meets convenience. Experience the future of car rentals 
+                with GlydeOn's premium 2025 Swift fleet.
               </p>
             </div>
 
@@ -56,11 +56,11 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="btn-premium text-lg px-8 py-4 group">
-                Book Your Swift Now
+              <Button className="btn-premium text-lg px-10 py-5 group animate-luxury-float">
+                Book Your GlydeOn Now
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="ghost" className="btn-ghost text-lg px-8 py-4 group">
+              <Button variant="ghost" className="btn-ghost text-lg px-10 py-5 group">
                 <Play className="w-5 h-5 mr-2" />
                 Watch Demo
               </Button>
@@ -83,31 +83,36 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Car Image */}
-          <div className="relative animate-scale-in" style={{ animationDelay: '0.2s' }}>
+          {/* Premium Swift Toy Car */}
+          <div className="relative animate-cred-slide">
             <div className="relative z-10">
               <img
-                src={swiftHeroImage}
-                alt="2025 Suzuki Swift - Premium Car Rental"
-                className="w-full h-auto animate-drive hover-lift transition-all duration-700 rounded-3xl shadow-elevation"
+                src={premiumSwiftToy}
+                alt="Premium 2025 Suzuki Swift Toy Model - GlydeOn Rental"
+                className="w-full h-auto animate-premium-drive hover-lift transition-all duration-700 rounded-3xl shadow-elevation animate-premium-glow"
               />
               
-              {/* Floating Elements */}
-              <div className="absolute -top-6 -left-6 glass p-4 rounded-2xl animate-floating">
-                <div className="text-2xl font-bold text-premium">₹1200</div>
+              {/* Floating Premium Elements */}
+              <div className="absolute -top-8 -left-8 glass p-6 rounded-3xl animate-luxury-float backdrop-blur-md">
+                <div className="text-3xl font-bold text-premium">₹1200</div>
                 <div className="text-sm text-muted-foreground">Per Day</div>
+                <div className="text-xs text-accent">Premium Rate</div>
               </div>
               
-              <div className="absolute -bottom-6 -right-6 glass p-4 rounded-2xl animate-floating" style={{ animationDelay: '1.5s' }}>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse-glow" />
-                  <span className="text-sm font-medium">Available Now</span>
+              <div className="absolute -bottom-8 -right-8 glass p-6 rounded-3xl animate-luxury-float backdrop-blur-md" style={{ animationDelay: '2s' }}>
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-accent rounded-full animate-premium-glow" />
+                  <div>
+                    <div className="text-sm font-bold">Available Now</div>
+                    <div className="text-xs text-muted-foreground">Premium Fleet</div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-premium rounded-3xl blur-3xl opacity-20 -z-10 animate-pulse-glow" />
+            {/* Enhanced Glow Effect */}
+            <div className="absolute inset-0 bg-gradient-premium rounded-3xl blur-3xl opacity-30 -z-10 animate-premium-glow" />
+            <div className="absolute inset-0 bg-accent/20 rounded-3xl blur-2xl opacity-20 -z-20 animate-luxury-float" />
           </div>
         </div>
       </div>
