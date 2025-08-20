@@ -56,7 +56,7 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="btn-premium text-lg px-10 py-5 group animate-luxury-float">
+              <Button className="btn-premium text-lg px-10 py-5 group">
                 Book Your GlydeOn Now
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>

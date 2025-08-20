@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Car, Phone, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
@@ -39,8 +41,11 @@ const Navigation = () => {
               <Phone className="w-4 h-4 mr-2" />
               Call Now
             </Button>
-            <Button className="btn-premium">
-              Book Now
+            <Button 
+              className="btn-premium"
+              onClick={() => navigate('/auth')}
+            >
+              Get Started
             </Button>
           </div>
 
@@ -74,8 +79,11 @@ const Navigation = () => {
                   <Phone className="w-4 h-4 mr-2" />
                   Call Now
                 </Button>
-                <Button className="btn-premium w-full">
-                  Book Now
+                <Button 
+                  className="btn-premium w-full"
+                  onClick={() => navigate('/auth')}
+                >
+                  Get Started
                 </Button>
               </div>
             </div>

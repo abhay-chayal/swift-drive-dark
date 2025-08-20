@@ -146,6 +146,49 @@ export default {
 						opacity: '1',
 						filter: 'blur(0px)'
 					}
+				},
+				'car-tow': {
+					'0%': { 
+						transform: 'translateX(100px)',
+						opacity: '0'
+					},
+					'100%': { 
+						transform: 'translateX(0)',
+						opacity: '1'
+					}
+				},
+				'tow-car': {
+					'0%': { 
+						transform: 'translateX(80px) rotate(15deg)',
+						opacity: '0'
+					},
+					'100%': { 
+						transform: 'translateX(0) rotate(12deg)',
+						opacity: '1'
+					}
+				},
+				'towed-box': {
+					'0%': { 
+						transform: 'translateX(60px)',
+						opacity: '0'
+					},
+					'100%': { 
+						transform: 'translateX(0)',
+						opacity: '1'
+					}
+				},
+				'tow-line': {
+					'0%': { 
+						width: '0',
+						opacity: '0'
+					},
+					'50%': { 
+						opacity: '1'
+					},
+					'100%': { 
+						width: '4rem',
+						opacity: '0.6'
+					}
 				}
 			},
 			animation: {
@@ -155,7 +198,11 @@ export default {
 				'luxury-float': 'luxury-float 6s ease-in-out infinite',
 				'cred-slide': 'cred-slide 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
 				'premium-glow': 'premium-glow 3s infinite',
-				'scale-luxury': 'scale-luxury 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
+				'scale-luxury': 'scale-luxury 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+				'car-tow': 'car-tow 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
+				'tow-car': 'tow-car 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
+				'towed-box': 'towed-box 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
+				'tow-line': 'tow-line 1.5s ease-in-out 0.2s'
 			}
 		}
 	},
