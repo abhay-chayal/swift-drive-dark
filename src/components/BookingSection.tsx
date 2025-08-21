@@ -4,8 +4,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar, MapPin, Clock, CreditCard, ArrowRight, Smartphone } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const BookingSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section id="booking" className="py-20 bg-gradient-hero relative overflow-hidden">
       {/* Background Elements */}
@@ -142,7 +145,10 @@ const BookingSection = () => {
                 </div>
 
                 {/* Book Button */}
-                <Button className="btn-premium w-full text-lg py-6 group">
+                <Button 
+                  className="btn-premium w-full text-lg py-6 group"
+                  onClick={() => navigate('/auth')}
+                >
                   <CreditCard className="w-5 h-5 mr-2" />
                   Book with UPI
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -158,7 +164,7 @@ const BookingSection = () => {
           {/* Booking Features */}
           <div className="space-y-8">
             <div className="space-y-6">
-              <h3 className="text-3xl font-bold">Why Book with SwiftRent?</h3>
+              <h3 className="text-3xl font-bold">Why Book with GlydeOn?</h3>
               
               <div className="space-y-4">
                 {[

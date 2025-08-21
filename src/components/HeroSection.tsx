@@ -1,8 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Play, Star, ArrowRight, Zap, Shield, Clock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import premiumSwiftToy from '@/assets/premium-swift-toy.jpg';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-hero relative overflow-hidden">
       {/* Background Elements */}
@@ -56,7 +59,10 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="btn-premium text-lg px-10 py-5 group">
+              <Button 
+                className="btn-premium text-lg px-10 py-5 group"
+                onClick={() => navigate('/auth')}
+              >
                 Book Your GlydeOn Now
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
