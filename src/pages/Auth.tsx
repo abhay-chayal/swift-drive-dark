@@ -26,18 +26,31 @@ const Auth = () => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('Auth state change:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Redirect authenticated users to home
-        if (session?.user) {
+        // Handle different authentication events
+        if (event === 'SIGNED_IN' && session?.user) {
+          toast({
+            title: "Successfully signed in!",
+            description: `Welcome back, ${session.user.email}`,
+          });
           navigate('/');
+        } else if (event === 'SIGNED_OUT') {
+          toast({
+            title: "Signed out",
+            description: "You have been successfully signed out.",
+          });
+        } else if (event === 'TOKEN_REFRESHED') {
+          console.log('Token refreshed successfully');
         }
       }
     );
 
     // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session check:', session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       
@@ -47,35 +60,64 @@ const Auth = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, toast]);
+
+  const getRedirectUrl = () => {
+    // For Lovable preview environment
+    if (window.location.hostname.includes('lovable.')) {
+      return window.location.origin + '/';
+    }
+    // For local development
+    if (window.location.hostname === 'localhost') {
+      return `${window.location.protocol}//${window.location.hostname}:${window.location.port}/`;
+    }
+    // For custom domains or production
+    return window.location.origin + '/';
+  };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const redirectUrl = `${window.location.origin}/`;
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: {
-          full_name: name,
+    try {
+      const redirectUrl = getRedirectUrl();
+      console.log('Sign up redirect URL:', redirectUrl);
+      
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            full_name: name,
+          }
         }
-      }
-    });
-
-    if (error) {
-      toast({
-        title: "Sign Up Error",
-        description: error.message,
-        variant: "destructive",
       });
-    } else {
+
+      if (error) {
+        console.error('Sign up error:', error);
+        toast({
+          title: "Sign Up Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else if (data.user && !data.user.email_confirmed_at) {
+        toast({
+          title: "Check Your Email",
+          description: `We've sent a confirmation link to ${email}. Please check your inbox and click the link to activate your account.`,
+        });
+      } else if (data.user && data.user.email_confirmed_at) {
+        toast({
+          title: "Welcome to GlydeOn!",
+          description: "Your account has been created successfully.",
+        });
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
       toast({
-        title: "Check Your Email",
-        description: "We've sent you a confirmation link to complete your registration.",
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
       });
     }
     
@@ -86,15 +128,38 @@ const Auth = () => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
+      if (error) {
+        console.error('Sign in error:', error);
+        let errorMessage = error.message;
+        
+        if (error.message === 'Invalid login credentials') {
+          errorMessage = 'Invalid email or password. Please check your credentials and try again.';
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = 'Please check your email and click the confirmation link before signing in.';
+        }
+        
+        toast({
+          title: "Sign In Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      } else if (data.user) {
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in to GlydeOn.",
+        });
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
       toast({
-        title: "Sign In Error",
-        description: error.message,
+        title: "Something went wrong",
+        description: "Please try again later.",
         variant: "destructive",
       });
     }
