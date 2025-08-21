@@ -60,8 +60,12 @@ const HeroSection = () => {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
+                type="button"
                 className="btn-premium text-lg px-10 py-5 group"
-                onClick={() => navigate('/auth')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate('/auth');
+                }}
               >
                 Book Your GlydeOn Now
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

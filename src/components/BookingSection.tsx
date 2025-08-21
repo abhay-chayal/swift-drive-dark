@@ -146,8 +146,12 @@ const BookingSection = () => {
 
                 {/* Book Button */}
                 <Button 
+                  type="button"
                   className="btn-premium w-full text-lg py-6 group"
-                  onClick={() => navigate('/auth')}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/auth');
+                  }}
                 >
                   <CreditCard className="w-5 h-5 mr-2" />
                   Book with UPI
