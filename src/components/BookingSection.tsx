@@ -149,7 +149,9 @@ const BookingSection = () => {
                   type="button"
                   className="btn-premium w-full text-lg py-6 group"
                   onClick={(e) => {
+                    console.log('Booking button clicked');
                     e.preventDefault();
+                    e.stopPropagation();
                     navigate('/auth');
                   }}
                 >

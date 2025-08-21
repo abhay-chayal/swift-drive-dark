@@ -63,7 +63,9 @@ const HeroSection = () => {
                 type="button"
                 className="btn-premium text-lg px-10 py-5 group"
                 onClick={(e) => {
+                  console.log('Hero button clicked');
                   e.preventDefault();
+                  e.stopPropagation();
                   navigate('/auth');
                 }}
               >
