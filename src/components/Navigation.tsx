@@ -24,14 +24,14 @@ const Navigation = () => {
             <a href="#home" className="text-foreground hover:text-primary transition-colors duration-300">
               Home
             </a>
-            <a href="#fleet" className="text-foreground hover:text-primary transition-colors duration-300">
+            <button 
+              onClick={() => navigate('/fleet')} 
+              className="text-foreground hover:text-primary transition-colors duration-300"
+            >
               Fleet
-            </a>
+            </button>
             <a href="#services" className="text-foreground hover:text-primary transition-colors duration-300">
               Services
-            </a>
-            <a href="#contact" className="text-foreground hover:text-primary transition-colors duration-300">
-              Contact
             </a>
           </div>
 
@@ -65,14 +65,14 @@ const Navigation = () => {
               <a href="#home" className="text-foreground hover:text-primary transition-colors">
                 Home
               </a>
-              <a href="#fleet" className="text-foreground hover:text-primary transition-colors">
+              <button 
+                onClick={() => navigate('/fleet')} 
+                className="text-foreground hover:text-primary transition-colors text-left"
+              >
                 Fleet
-              </a>
+              </button>
               <a href="#services" className="text-foreground hover:text-primary transition-colors">
                 Services
-              </a>
-              <a href="#contact" className="text-foreground hover:text-primary transition-colors">
-                Contact
               </a>
               <div className="pt-4 space-y-2">
                 <Button variant="ghost" className="w-full justify-start">

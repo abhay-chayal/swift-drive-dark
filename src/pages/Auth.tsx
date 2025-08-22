@@ -19,6 +19,7 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -90,6 +91,7 @@ const Auth = () => {
           emailRedirectTo: redirectUrl,
           data: {
             full_name: name,
+            username: username,
           }
         }
       });
@@ -282,6 +284,22 @@ const Auth = () => {
                               placeholder="Your Name"
                               value={name}
                               onChange={(e) => setName(e.target.value)}
+                              className="pl-10 glass"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="signup-username" className="text-sm font-medium">Username</Label>
+                          <div className="relative">
+                            <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                            <Input
+                              id="signup-username"
+                              type="text"
+                              placeholder="username"
+                              value={username}
+                              onChange={(e) => setUsername(e.target.value)}
                               className="pl-10 glass"
                               required
                             />
