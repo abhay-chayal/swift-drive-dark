@@ -69,7 +69,7 @@ const HeroSection = () => {
                   navigate('/auth');
                 }}
               >
-                Book Your GlydeOn Now
+                Login/Signup
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button variant="ghost" className="btn-ghost text-lg px-10 py-5 group">

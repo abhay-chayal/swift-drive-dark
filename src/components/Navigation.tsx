@@ -45,7 +45,7 @@ const Navigation = () => {
               className="btn-premium"
               onClick={() => navigate('/auth')}
             >
-              Get Started
+              Login/Signup
             </Button>
           </div>
 
@@ -83,7 +83,7 @@ const Navigation = () => {
                   className="btn-premium w-full"
                   onClick={() => navigate('/auth')}
                 >
-                  Get Started
+                  Login/Signup
                 </Button>
               </div>
             </div>
