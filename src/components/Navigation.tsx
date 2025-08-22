@@ -1,11 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Car, Phone, MapPin } from 'lucide-react';
+import { Menu, X, Car, Phone, MapPin, User, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
@@ -41,12 +65,25 @@ const Navigation = () => {
               <Phone className="w-4 h-4 mr-2" />
               Call Now
             </Button>
-            <Button 
-              className="btn-premium"
-              onClick={() => navigate('/auth')}
-            >
-              Login/Signup
-            </Button>
+            {user ? (
+              <div className="flex items-center space-x-2">
+                <Button variant="ghost" size="sm">
+                  <User className="w-4 h-4 mr-2" />
+                  {user.email}
+                </Button>
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <Button 
+                className="btn-premium"
+                onClick={() => navigate('/auth')}
+              >
+                Login/Signup
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -79,12 +116,25 @@ const Navigation = () => {
                   <Phone className="w-4 h-4 mr-2" />
                   Call Now
                 </Button>
-                <Button 
-                  className="btn-premium w-full"
-                  onClick={() => navigate('/auth')}
-                >
-                  Login/Signup
-                </Button>
+                {user ? (
+                  <div className="space-y-2">
+                    <Button variant="ghost" className="w-full justify-start">
+                      <User className="w-4 h-4 mr-2" />
+                      {user.email}
+                    </Button>
+                    <Button variant="outline" className="w-full" onClick={handleLogout}>
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Logout
+                    </Button>
+                  </div>
+                ) : (
+                  <Button 
+                    className="btn-premium w-full"
+                    onClick={() => navigate('/auth')}
+                  >
+                    Login/Signup
+                  </Button>
+                )}
               </div>
             </div>
           </div>

@@ -1,10 +1,30 @@
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Star, ArrowRight, Zap, Shield, Clock } from 'lucide-react';
+import { Play, Star, ArrowRight, Zap, Shield, Clock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 import premiumSwiftToy from '@/assets/premium-swift-toy.jpg';
 
 const HeroSection = () => {
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-hero relative overflow-hidden">
@@ -59,19 +79,31 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                type="button"
-                className="btn-premium text-lg px-10 py-5 group"
-                onClick={(e) => {
-                  console.log('Hero button clicked');
-                  e.preventDefault();
-                  e.stopPropagation();
-                  navigate('/auth');
-                }}
-              >
-                Login/Signup
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              {user ? (
+                <Button 
+                  type="button"
+                  className="btn-premium text-lg px-10 py-5 group"
+                  onClick={() => navigate('#booking')}
+                >
+                  <User className="w-5 h-5 mr-2" />
+                  Book Now - {user.email}
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              ) : (
+                <Button 
+                  type="button"
+                  className="btn-premium text-lg px-10 py-5 group"
+                  onClick={(e) => {
+                    console.log('Hero button clicked');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navigate('/auth');
+                  }}
+                >
+                  Login/Signup
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              )}
               <Button variant="ghost" className="btn-ghost text-lg px-10 py-5 group">
                 <Play className="w-5 h-5 mr-2" />
                 Watch Demo

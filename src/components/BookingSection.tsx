@@ -1,13 +1,33 @@
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar, MapPin, Clock, CreditCard, ArrowRight, Smartphone } from 'lucide-react';
+import { Calendar, MapPin, Clock, CreditCard, ArrowRight, Smartphone, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 const BookingSection = () => {
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <section id="booking" className="py-20 bg-gradient-hero relative overflow-hidden">
@@ -145,19 +165,35 @@ const BookingSection = () => {
                 </div>
 
                 {/* Book Button */}
-                <Button 
-                  type="button"
-                  className="btn-premium w-full text-lg py-6 group"
-                  onClick={(e) => {
-                    console.log('Booking button clicked');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    navigate('/auth');
-                  }}
-                >
-                  Login/Signup to Book
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                {user ? (
+                  <Button 
+                    type="button"
+                    className="btn-premium w-full text-lg py-6 group"
+                    onClick={() => {
+                      console.log('Book button clicked for authenticated user');
+                      // TODO: Handle actual booking logic
+                      alert('Booking feature coming soon!');
+                    }}
+                  >
+                    <CreditCard className="w-5 h-5 mr-2" />
+                    Book with UPI - {user.email}
+                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                ) : (
+                  <Button 
+                    type="button"
+                    className="btn-premium w-full text-lg py-6 group"
+                    onClick={(e) => {
+                      console.log('Booking button clicked');
+                      e.preventDefault();
+                      e.stopPropagation();
+                      navigate('/auth');
+                    }}
+                  >
+                    Login/Signup to Book
+                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                )}
 
                 <p className="text-xs text-muted-foreground text-center">
                   Instant confirmation • No hidden charges • Cancel anytime
