@@ -104,9 +104,13 @@ const HeroSection = () => {
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               )}
-              <Button variant="ghost" className="btn-ghost text-lg px-10 py-5 group">
+              <Button 
+                variant="ghost" 
+                className="btn-ghost text-lg px-10 py-5 group"
+                onClick={() => navigate('/fleet')}
+              >
                 <Play className="w-5 h-5 mr-2" />
-                Watch Demo
+                View Fleet
               </Button>
             </div>
 
@@ -138,8 +142,8 @@ const HeroSection = () => {
               
               {/* Floating Premium Elements */}
               <div className="absolute -top-8 -left-8 glass p-6 rounded-3xl animate-luxury-float backdrop-blur-md">
-                <div className="text-3xl font-bold text-premium">₹1200</div>
-                <div className="text-sm text-muted-foreground">Per Day</div>
+                <div className="text-3xl font-bold text-premium">₹120</div>
+                <div className="text-sm text-muted-foreground">Per Hour</div>
                 <div className="text-xs text-accent">Premium Rate</div>
               </div>
               

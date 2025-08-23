@@ -221,10 +221,11 @@ const BookingSection = () => {
                       <SelectValue placeholder="Select duration" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="1 Day - ₹1,200">1 Day - ₹1,200</SelectItem>
-                      <SelectItem value="3 Days - ₹3,400">3 Days - ₹3,400</SelectItem>
-                      <SelectItem value="1 Week - ₹7,500">1 Week - ₹7,500</SelectItem>
-                      <SelectItem value="1 Month - ₹25,000">1 Month - ₹25,000</SelectItem>
+                      <SelectItem value="4 Hours - ₹480">4 Hours - ₹480</SelectItem>
+                      <SelectItem value="8 Hours - ₹960">8 Hours - ₹960</SelectItem>
+                      <SelectItem value="1 Day (24 Hours) - ₹2,880">1 Day (24 Hours) - ₹2,880</SelectItem>
+                      <SelectItem value="3 Days - ₹8,640">3 Days - ₹8,640</SelectItem>
+                      <SelectItem value="1 Week - ₹20,160">1 Week - ₹20,160</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -325,21 +326,21 @@ const BookingSection = () => {
                 <h4 className="text-xl font-bold mb-4">2025 Swift Pricing</h4>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Daily Rate</span>
-                    <span className="font-semibold text-primary">₹1,200</span>
+                    <span className="text-muted-foreground">Hourly Rate</span>
+                    <span className="font-semibold text-primary">₹120/hour</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-muted-foreground">Daily Rate (24 hrs)</span>
+                    <span className="font-semibold text-primary">₹2,880</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Weekly Discount</span>
                     <span className="font-semibold text-green-500">-15%</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Monthly Discount</span>
-                    <span className="font-semibold text-green-500">-30%</span>
-                  </div>
                   <hr className="border-border/20" />
                   <div className="flex justify-between items-center font-bold text-lg">
                     <span>Best Value</span>
-                    <span className="text-premium">₹25,000/month</span>
+                    <span className="text-premium">₹20,160/week</span>
                   </div>
                 </div>
               </CardContent>
