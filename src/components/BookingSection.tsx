@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { useToast } from '@/hooks/use-toast';
-
 const BookingSection = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,46 +21,53 @@ const BookingSection = () => {
     phone: ''
   });
   const navigate = useNavigate();
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   useEffect(() => {
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({
+      data: {
+        session
+      }
+    }) => {
       setUser(session?.user ?? null);
     });
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
+    const {
+      data: {
+        subscription
       }
-    );
-
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
     return () => subscription.unsubscribe();
   }, []);
-
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
-
   const handleBooking = async () => {
     if (!user) return;
 
     // Validate form data
-    if (!formData.pickupLocation || !formData.dropoffLocation || !formData.pickupDate || 
-        !formData.pickupTime || !formData.duration || !formData.phone) {
+    if (!formData.pickupLocation || !formData.dropoffLocation || !formData.pickupDate || !formData.pickupTime || !formData.duration || !formData.phone) {
       toast({
         title: "Missing Information",
         description: "Please fill in all booking details",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-
     setIsLoading(true);
-
     try {
-      const { data, error } = await supabase.functions.invoke('send-booking-email', {
+      const {
+        data,
+        error
+      } = await supabase.functions.invoke('send-booking-email', {
         body: {
           userEmail: user.email,
           userName: user.user_metadata?.full_name || user.email,
@@ -73,14 +79,12 @@ const BookingSection = () => {
           phone: formData.phone
         }
       });
-
       if (error) {
         throw error;
       }
-
       toast({
         title: "Booking Enquiry Sent!",
-        description: "We've received your booking request. Our team will contact you shortly.",
+        description: "We've received your booking request. Our team will contact you shortly."
       });
 
       // Reset form
@@ -92,21 +96,18 @@ const BookingSection = () => {
         duration: '',
         phone: ''
       });
-
     } catch (error) {
       console.error('Booking error:', error);
       toast({
         title: "Booking Failed",
         description: "There was an error sending your booking request. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
     }
   };
-
-  return (
-    <section id="booking" className="py-20 bg-gradient-hero relative overflow-hidden">
+  return <section id="booking" className="py-20 bg-gradient-hero relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,212,255,0.05)_0%,_transparent_70%)]" />
       <div className="absolute top-20 left-20 w-64 h-64 bg-accent/5 rounded-full blur-3xl animate-floating" />
@@ -141,7 +142,7 @@ const BookingSection = () => {
                       <MapPin className="w-4 h-4 mr-2 text-primary" />
                       Pickup Location
                     </Label>
-                    <Select value={formData.pickupLocation} onValueChange={(value) => handleInputChange('pickupLocation', value)}>
+                    <Select value={formData.pickupLocation} onValueChange={value => handleInputChange('pickupLocation', value)}>
                       <SelectTrigger className="bg-muted/50 border-border/20">
                         <SelectValue placeholder="Select pickup city" />
                       </SelectTrigger>
@@ -160,7 +161,7 @@ const BookingSection = () => {
                       <MapPin className="w-4 h-4 mr-2 text-primary" />
                       Drop-off Location
                     </Label>
-                    <Select value={formData.dropoffLocation} onValueChange={(value) => handleInputChange('dropoffLocation', value)}>
+                    <Select value={formData.dropoffLocation} onValueChange={value => handleInputChange('dropoffLocation', value)}>
                       <SelectTrigger className="bg-muted/50 border-border/20">
                         <SelectValue placeholder="Select drop-off city" />
                       </SelectTrigger>
@@ -182,13 +183,7 @@ const BookingSection = () => {
                       <Calendar className="w-4 h-4 mr-2 text-primary" />
                       Pickup Date
                     </Label>
-                    <Input
-                      type="date"
-                      id="pickup-date"
-                      value={formData.pickupDate}
-                      onChange={(e) => handleInputChange('pickupDate', e.target.value)}
-                      className="bg-muted/50 border-border/20"
-                    />
+                    <Input type="date" id="pickup-date" value={formData.pickupDate} onChange={e => handleInputChange('pickupDate', e.target.value)} className="bg-muted/50 border-border/20" />
                   </div>
                   
                   <div className="space-y-2">
@@ -196,7 +191,7 @@ const BookingSection = () => {
                       <Clock className="w-4 h-4 mr-2 text-primary" />
                       Pickup Time
                     </Label>
-                    <Select value={formData.pickupTime} onValueChange={(value) => handleInputChange('pickupTime', value)}>
+                    <Select value={formData.pickupTime} onValueChange={value => handleInputChange('pickupTime', value)}>
                       <SelectTrigger className="bg-muted/50 border-border/20">
                         <SelectValue placeholder="Select time" />
                       </SelectTrigger>
@@ -216,7 +211,7 @@ const BookingSection = () => {
                     <Clock className="w-4 h-4 mr-2 text-primary" />
                     Rental Duration
                   </Label>
-                  <Select value={formData.duration} onValueChange={(value) => handleInputChange('duration', value)}>
+                  <Select value={formData.duration} onValueChange={value => handleInputChange('duration', value)}>
                     <SelectTrigger className="bg-muted/50 border-border/20">
                       <SelectValue placeholder="Select duration" />
                     </SelectTrigger>
@@ -234,44 +229,24 @@ const BookingSection = () => {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="phone" className="text-sm font-medium">Phone Number</Label>
-                    <Input
-                      type="tel"
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange('phone', e.target.value)}
-                      placeholder="+91 98765 43210"
-                      className="bg-muted/50 border-border/20"
-                    />
+                    <Input type="tel" id="phone" value={formData.phone} onChange={e => handleInputChange('phone', e.target.value)} placeholder="+91 98765 43210" className="bg-muted/50 border-border/20" />
                   </div>
                 </div>
 
                 {/* Book Button */}
-                {user ? (
-                  <Button 
-                    type="button"
-                    className="btn-premium w-full text-lg py-6 group"
-                    onClick={handleBooking}
-                    disabled={isLoading}
-                  >
+                {user ? <Button type="button" className="btn-premium w-full text-lg py-6 group" onClick={handleBooking} disabled={isLoading}>
                     <CreditCard className="w-5 h-5 mr-2" />
                     {isLoading ? 'Sending...' : 'Book Now'}
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                ) : (
-                  <Button 
-                    type="button"
-                    className="btn-premium w-full text-lg py-6 group"
-                    onClick={(e) => {
-                      console.log('Booking button clicked');
-                      e.preventDefault();
-                      e.stopPropagation();
-                      navigate('/auth');
-                    }}
-                  >
+                  </Button> : <Button type="button" className="btn-premium w-full text-lg py-6 group" onClick={e => {
+                console.log('Booking button clicked');
+                e.preventDefault();
+                e.stopPropagation();
+                navigate('/auth');
+              }}>
                     Login/Signup to Book
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                )}
+                  </Button>}
 
                 <p className="text-xs text-muted-foreground text-center">
                   Instant confirmation • No hidden charges • Cancel anytime
@@ -286,24 +261,19 @@ const BookingSection = () => {
               <h3 className="text-3xl font-bold">Why Book with GlydeOn?</h3>
               
               <div className="space-y-4">
-                {[
-                  {
-                    icon: Smartphone,
-                    title: "UPI Integration",
-                    description: "Pay instantly with any UPI app - GPay, PhonePe, Paytm, and more"
-                  },
-                  {
-                    icon: Clock,
-                    title: "Instant Confirmation",
-                    description: "Get booking confirmation within seconds of payment"
-                  },
-                  {
-                    icon: MapPin,
-                    title: "Doorstep Delivery",
-                    description: "We deliver the car to your preferred location"
-                  }
-                ].map((feature, index) => (
-                  <div key={feature.title} className="flex space-x-4 group">
+                {[{
+                icon: Smartphone,
+                title: "UPI Integration",
+                description: "Pay instantly with any UPI app - GPay, PhonePe, Paytm, and more"
+              }, {
+                icon: Clock,
+                title: "Instant Confirmation",
+                description: "Get booking confirmation within seconds of payment"
+              }, {
+                icon: MapPin,
+                title: "Doorstep Delivery",
+                description: "We deliver the car to your preferred location"
+              }].map((feature, index) => <div key={feature.title} className="flex space-x-4 group">
                     <div className="w-12 h-12 bg-gradient-premium rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                       <feature.icon className="w-6 h-6 text-primary-foreground" />
                     </div>
@@ -315,8 +285,7 @@ const BookingSection = () => {
                         {feature.description}
                       </p>
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
 
@@ -331,7 +300,7 @@ const BookingSection = () => {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Daily Rate (24 hrs)</span>
-                    <span className="font-semibold text-primary">₹2,880</span>
+                    <span className="font-semibold text-primary">₹2,100</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Weekly Discount</span>
@@ -340,7 +309,7 @@ const BookingSection = () => {
                   <hr className="border-border/20" />
                   <div className="flex justify-between items-center font-bold text-lg">
                     <span>Best Value</span>
-                    <span className="text-premium">₹20,160/week</span>
+                    <span className="text-premium">₹14,160/week</span>
                   </div>
                 </div>
               </CardContent>
@@ -348,8 +317,6 @@ const BookingSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default BookingSection;
