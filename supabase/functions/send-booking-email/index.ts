@@ -33,7 +33,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const emailResponse = await resend.emails.send({
       from: "GlydeOn Booking <onboarding@resend.dev>",
-      to: ["chayalabhi@gmail.com"],
+      to: ["chayalabhay123@gmail.com"],
       subject: "New Swift Booking Enquiry",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
