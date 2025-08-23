@@ -8,10 +8,21 @@ import { Calendar, MapPin, Clock, CreditCard, ArrowRight, Smartphone, User } fro
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
+import { useToast } from '@/hooks/use-toast';
 
 const BookingSection = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    pickupLocation: '',
+    dropoffLocation: '',
+    pickupDate: '',
+    pickupTime: '',
+    duration: '',
+    phone: ''
+  });
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     // Get initial session
@@ -28,6 +39,71 @@ const BookingSection = () => {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleBooking = async () => {
+    if (!user) return;
+
+    // Validate form data
+    if (!formData.pickupLocation || !formData.dropoffLocation || !formData.pickupDate || 
+        !formData.pickupTime || !formData.duration || !formData.phone) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all booking details",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('send-booking-email', {
+        body: {
+          userEmail: user.email,
+          userName: user.user_metadata?.full_name || user.email,
+          pickupLocation: formData.pickupLocation,
+          dropoffLocation: formData.dropoffLocation,
+          pickupDate: formData.pickupDate,
+          pickupTime: formData.pickupTime,
+          duration: formData.duration,
+          phone: formData.phone
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Booking Enquiry Sent!",
+        description: "We've received your booking request. Our team will contact you shortly.",
+      });
+
+      // Reset form
+      setFormData({
+        pickupLocation: '',
+        dropoffLocation: '',
+        pickupDate: '',
+        pickupTime: '',
+        duration: '',
+        phone: ''
+      });
+
+    } catch (error) {
+      console.error('Booking error:', error);
+      toast({
+        title: "Booking Failed",
+        description: "There was an error sending your booking request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section id="booking" className="py-20 bg-gradient-hero relative overflow-hidden">
@@ -65,7 +141,7 @@ const BookingSection = () => {
                       <MapPin className="w-4 h-4 mr-2 text-primary" />
                       Pickup Location
                     </Label>
-                    <Select>
+                    <Select value={formData.pickupLocation} onValueChange={(value) => handleInputChange('pickupLocation', value)}>
                       <SelectTrigger className="bg-muted/50 border-border/20">
                         <SelectValue placeholder="Select pickup city" />
                       </SelectTrigger>
@@ -84,7 +160,7 @@ const BookingSection = () => {
                       <MapPin className="w-4 h-4 mr-2 text-primary" />
                       Drop-off Location
                     </Label>
-                    <Select>
+                    <Select value={formData.dropoffLocation} onValueChange={(value) => handleInputChange('dropoffLocation', value)}>
                       <SelectTrigger className="bg-muted/50 border-border/20">
                         <SelectValue placeholder="Select drop-off city" />
                       </SelectTrigger>
@@ -109,6 +185,8 @@ const BookingSection = () => {
                     <Input
                       type="date"
                       id="pickup-date"
+                      value={formData.pickupDate}
+                      onChange={(e) => handleInputChange('pickupDate', e.target.value)}
                       className="bg-muted/50 border-border/20"
                     />
                   </div>
@@ -118,7 +196,7 @@ const BookingSection = () => {
                       <Clock className="w-4 h-4 mr-2 text-primary" />
                       Pickup Time
                     </Label>
-                    <Select>
+                    <Select value={formData.pickupTime} onValueChange={(value) => handleInputChange('pickupTime', value)}>
                       <SelectTrigger className="bg-muted/50 border-border/20">
                         <SelectValue placeholder="Select time" />
                       </SelectTrigger>
@@ -138,15 +216,15 @@ const BookingSection = () => {
                     <Clock className="w-4 h-4 mr-2 text-primary" />
                     Rental Duration
                   </Label>
-                  <Select>
+                  <Select value={formData.duration} onValueChange={(value) => handleInputChange('duration', value)}>
                     <SelectTrigger className="bg-muted/50 border-border/20">
                       <SelectValue placeholder="Select duration" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="1">1 Day - ₹1,200</SelectItem>
-                      <SelectItem value="3">3 Days - ₹3,400</SelectItem>
-                      <SelectItem value="7">1 Week - ₹7,500</SelectItem>
-                      <SelectItem value="30">1 Month - ₹25,000</SelectItem>
+                      <SelectItem value="1 Day - ₹1,200">1 Day - ₹1,200</SelectItem>
+                      <SelectItem value="3 Days - ₹3,400">3 Days - ₹3,400</SelectItem>
+                      <SelectItem value="1 Week - ₹7,500">1 Week - ₹7,500</SelectItem>
+                      <SelectItem value="1 Month - ₹25,000">1 Month - ₹25,000</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -158,6 +236,8 @@ const BookingSection = () => {
                     <Input
                       type="tel"
                       id="phone"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
                       placeholder="+91 98765 43210"
                       className="bg-muted/50 border-border/20"
                     />
@@ -169,14 +249,11 @@ const BookingSection = () => {
                   <Button 
                     type="button"
                     className="btn-premium w-full text-lg py-6 group"
-                    onClick={() => {
-                      console.log('Book button clicked for authenticated user');
-                      // TODO: Handle actual booking logic
-                      alert('Booking feature coming soon!');
-                    }}
+                    onClick={handleBooking}
+                    disabled={isLoading}
                   >
                     <CreditCard className="w-5 h-5 mr-2" />
-                    Book with UPI - {user.email}
+                    {isLoading ? 'Sending...' : 'Book Now'}
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 ) : (
