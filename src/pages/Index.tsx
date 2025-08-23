@@ -1,19 +1,11 @@
-import Navigation from "@/components/Navigation";
-import HeroSection from "@/components/HeroSection";
-import FeaturesSection from "@/components/FeaturesSection";
-import BookingSection from "@/components/BookingSection";
+// Update this page (the content is just a fallback if you fail to update the page)
 
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      <main className="page-transition">
-        <HeroSection />
-        <FeaturesSection />
-        <BookingSection />
-      </main>
-    </div>
-  );
+  return <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
+        
+      </div>
+    </div>;
 };
-
 export default Index;
