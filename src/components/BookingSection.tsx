@@ -51,23 +51,29 @@ const BookingSection = () => {
     }));
   };
   const handleBooking = async () => {
-    if (!user) return;
+    console.log('Booking button clicked, user:', user);
+    if (!user) {
+      console.log('No user found, redirecting to auth');
+      return;
+    }
 
     // Validate form data
     if (!formData.pickupLocation || !formData.dropoffLocation || !formData.pickupDate || !formData.pickupTime || !formData.duration || !formData.phone) {
+      console.log('Form validation failed:', formData);
       toast({
-        title: "Missing Information",
+        title: "Missing Information", 
         description: "Please fill in all booking details",
         variant: "destructive"
       });
       return;
     }
+
+    console.log('Starting booking process with form data:', formData);
     setIsLoading(true);
+    
     try {
-      const {
-        data,
-        error
-      } = await supabase.functions.invoke('send-booking-email', {
+      console.log('Calling supabase function...');
+      const { data, error } = await supabase.functions.invoke('send-booking-email', {
         body: {
           userEmail: user.email,
           userName: user.user_metadata?.full_name || user.email,
@@ -79,7 +85,11 @@ const BookingSection = () => {
           phone: formData.phone
         }
       });
+      
+      console.log('Supabase function response:', { data, error });
+      
       if (error) {
+        console.error('Supabase function error:', error);
         throw error;
       }
       toast({
