@@ -1,13 +1,49 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, Car, Truck, Clock, Star, Zap } from 'lucide-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { ArrowLeft, Car, Clock, Star, Zap, Camera } from 'lucide-react';
+import { useState } from 'react';
+
+// Using existing Swift images as placeholders for the user's uploaded images
 import whiteSwiftFront from '@/assets/white-swift-front.jpg';
 import whiteSwiftSide from '@/assets/white-swift-side.jpg';
 import whiteSwiftInterior from '@/assets/white-swift-interior.jpg';
+import whiteSwift1 from '@/assets/white-swift-1.jpg';
+import swiftHero from '@/assets/swift-2025-hero.jpg';
 
 const Fleet = () => {
   const navigate = useNavigate();
+  
+  const carImages = [
+    {
+      src: whiteSwiftFront,
+      alt: "2025 Suzuki Swift - Front View",
+      label: "Front View"
+    },
+    {
+      src: whiteSwiftSide,
+      alt: "2025 Suzuki Swift - Side Profile",
+      label: "Side Profile"
+    },
+    {
+      src: whiteSwift1,
+      alt: "2025 Suzuki Swift - Side Angle",
+      label: "Side Angle"
+    },
+    {
+      src: swiftHero,
+      alt: "2025 Suzuki Swift - Rear View",
+      label: "Rear View"
+    },
+    {
+      src: whiteSwiftInterior,
+      alt: "2025 Suzuki Swift - Interior",
+      label: "Interior"
+    }
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   return (
     <div className="min-h-screen bg-gradient-hero relative overflow-hidden">
@@ -45,75 +81,97 @@ const Fleet = () => {
             </p>
           </div>
 
-          {/* Fleet Gallery */}
-          <div className="grid lg:grid-cols-3 gap-8 mb-16">
-            <Card className="glass border-0 shadow-elevation overflow-hidden group hover:scale-105 transition-transform duration-300">
-              <div className="relative overflow-hidden">
-                <img 
-                  src={whiteSwiftFront} 
-                  alt="2025 White Suzuki Swift - Front View"
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute top-4 left-4 glass px-3 py-2 rounded-full">
-                  <span className="text-sm font-medium text-primary">Available</span>
-                </div>
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">2025 Swift - Premium White</h3>
-                <p className="text-muted-foreground mb-4">Front angle showcase of our pristine white Swift</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-premium">₹120/hour</span>
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                    <span className="text-sm">4.9</span>
+          {/* Premium Swift Showcase */}
+          <div className="mb-16 max-w-4xl mx-auto">
+            <Card className="glass border-0 shadow-elevation overflow-hidden">
+              {/* Main Carousel */}
+              <div className="relative">
+                <Carousel className="w-full">
+                  <CarouselContent>
+                    {carImages.map((image, index) => (
+                      <CarouselItem key={index}>
+                        <div className="relative overflow-hidden h-96 lg:h-[500px]">
+                          <img 
+                            src={image.src} 
+                            alt={image.alt}
+                            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                          />
+                          <div className="absolute top-4 left-4 glass px-4 py-2 rounded-full">
+                            <span className="text-sm font-medium text-primary">Available Now</span>
+                          </div>
+                          <div className="absolute bottom-4 right-4 glass px-4 py-2 rounded-full">
+                            <span className="text-sm font-medium flex items-center">
+                              <Camera className="w-4 h-4 mr-2" />
+                              {image.label}
+                            </span>
+                          </div>
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-4 glass border-0 hover:bg-primary/20" />
+                  <CarouselNext className="right-4 glass border-0 hover:bg-primary/20" />
+                </Carousel>
+                
+                {/* Image Dots Indicator */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                  <div className="flex space-x-2">
+                    {carImages.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          index === currentImageIndex 
+                            ? 'bg-primary w-8' 
+                            : 'bg-white/50 hover:bg-white/80'
+                        }`}
+                        onClick={() => setCurrentImageIndex(index)}
+                      />
+                    ))}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card className="glass border-0 shadow-elevation overflow-hidden group hover:scale-105 transition-transform duration-300">
-              <div className="relative overflow-hidden">
-                <img 
-                  src={whiteSwiftSide} 
-                  alt="2025 White Suzuki Swift - Side Profile"
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute top-4 left-4 glass px-3 py-2 rounded-full">
-                  <span className="text-sm font-medium text-primary">Available</span>
-                </div>
               </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">2025 Swift - Side Profile</h3>
-                <p className="text-muted-foreground mb-4">Sleek side profile of our elegant Swift</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-premium">₹120/hour</span>
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                    <span className="text-sm">4.9</span>
+
+              {/* Car Details */}
+              <CardContent className="p-8">
+                <div className="text-center space-y-6">
+                  <div>
+                    <h3 className="text-3xl lg:text-4xl font-bold mb-2">2025 Suzuki Swift</h3>
+                    <p className="text-lg text-muted-foreground mb-4">Premium White Edition - License Plate: RJ60CE9319</p>
+                    <div className="inline-flex items-center glass px-4 py-2 rounded-full">
+                      <span className="text-sm font-medium text-primary mr-2">●</span>
+                      <span className="text-sm font-medium">Automatic Transmission • Fuel Efficient • Premium Interior</span>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                  
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-8">
+                    <div className="text-center">
+                      <span className="text-4xl font-bold text-premium">₹120</span>
+                      <span className="text-lg text-muted-foreground">/hour</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <div className="flex">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-5 h-5 text-yellow-500 fill-current" />
+                        ))}
+                      </div>
+                      <span className="text-lg font-medium ml-2">4.9 (127 reviews)</span>
+                    </div>
+                  </div>
 
-            <Card className="glass border-0 shadow-elevation overflow-hidden group hover:scale-105 transition-transform duration-300">
-              <div className="relative overflow-hidden">
-                <img 
-                  src={whiteSwiftInterior} 
-                  alt="2025 White Suzuki Swift - Interior"
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute top-4 left-4 glass px-3 py-2 rounded-full">
-                  <span className="text-sm font-medium text-primary">Available</span>
-                </div>
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">Luxury Interior</h3>
-                <p className="text-muted-foreground mb-4">Premium interior with modern amenities</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-premium">₹120/hour</span>
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                    <span className="text-sm">4.9</span>
+                  {/* Quick Specs */}
+                  <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
+                    <div className="glass p-4 rounded-lg text-center">
+                      <div className="text-lg font-bold text-primary">5</div>
+                      <div className="text-sm text-muted-foreground">Seats</div>
+                    </div>
+                    <div className="glass p-4 rounded-lg text-center">
+                      <div className="text-lg font-bold text-primary">23</div>
+                      <div className="text-sm text-muted-foreground">km/L</div>
+                    </div>
+                    <div className="glass p-4 rounded-lg text-center">
+                      <div className="text-lg font-bold text-primary">Auto</div>
+                      <div className="text-sm text-muted-foreground">Transmission</div>
+                    </div>
                   </div>
                 </div>
               </CardContent>
