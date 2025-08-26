@@ -64,7 +64,7 @@ template = "Your code is {{ .Code }} ."
 max_frequency = 5
 
 [functions.send-booking-email]
-verify_jwt = false
+verify_jwt = true
 
 [edge_runtime]
 policy = "per_worker"

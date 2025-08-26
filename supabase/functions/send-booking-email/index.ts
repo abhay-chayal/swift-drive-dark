@@ -28,12 +28,16 @@ interface BookingEmailRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
+  console.log("Edge function called, method:", req.method);
+  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
+    console.log("Handling CORS preflight");
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    console.log("Processing booking request...");
     const bookingData: BookingEmailRequest = await req.json();
 
     console.log("Received booking data:", bookingData);
