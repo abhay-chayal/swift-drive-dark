@@ -83,7 +83,10 @@ const HeroSection = () => {
                 <Button 
                   type="button"
                   className="btn-premium text-lg px-10 py-5 group"
-                  onClick={() => navigate('#booking')}
+                  onClick={() => {
+                    const bookingSection = document.getElementById('booking');
+                    bookingSection?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   <User className="w-5 h-5 mr-2" />
                   Book Now - {user.email}

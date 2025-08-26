@@ -157,11 +157,12 @@ const BookingSection = () => {
                         <SelectValue placeholder="Select pickup city" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="mumbai">Mumbai</SelectItem>
-                        <SelectItem value="delhi">Delhi</SelectItem>
-                        <SelectItem value="bangalore">Bangalore</SelectItem>
-                        <SelectItem value="pune">Pune</SelectItem>
-                        <SelectItem value="hyderabad">Hyderabad</SelectItem>
+                        <SelectItem value="malviya-nagar">Malviya Nagar, Jaipur</SelectItem>
+                        <SelectItem value="c-scheme">C-Scheme, Jaipur</SelectItem>
+                        <SelectItem value="vaishali-nagar">Vaishali Nagar, Jaipur</SelectItem>
+                        <SelectItem value="kukas">Kukas, Jaipur</SelectItem>
+                        <SelectItem value="mansarovar">Mansarovar, Jaipur</SelectItem>
+                        <SelectItem value="jaipur-airport">Jaipur Airport</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -176,11 +177,12 @@ const BookingSection = () => {
                         <SelectValue placeholder="Select drop-off city" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="mumbai">Mumbai</SelectItem>
-                        <SelectItem value="delhi">Delhi</SelectItem>
-                        <SelectItem value="bangalore">Bangalore</SelectItem>
-                        <SelectItem value="pune">Pune</SelectItem>
-                        <SelectItem value="hyderabad">Hyderabad</SelectItem>
+                        <SelectItem value="malviya-nagar">Malviya Nagar, Jaipur</SelectItem>
+                        <SelectItem value="c-scheme">C-Scheme, Jaipur</SelectItem>
+                        <SelectItem value="vaishali-nagar">Vaishali Nagar, Jaipur</SelectItem>
+                        <SelectItem value="kukas">Kukas, Jaipur</SelectItem>
+                        <SelectItem value="mansarovar">Mansarovar, Jaipur</SelectItem>
+                        <SelectItem value="jaipur-airport">Jaipur Airport</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
