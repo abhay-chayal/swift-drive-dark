@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 
+console.log("Edge function loaded");
+
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
 console.log("Resend API key available:", !!resendApiKey);
 
@@ -14,6 +16,7 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
 interface BookingEmailRequest {
@@ -28,20 +31,42 @@ interface BookingEmailRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  console.log("Edge function called, method:", req.method);
+  console.log("=== Edge function called ===");
+  console.log("Method:", req.method);
+  console.log("URL:", req.url);
+  console.log("Headers:", Object.fromEntries(req.headers.entries()));
   
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     console.log("Handling CORS preflight");
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { 
+      status: 200,
+      headers: corsHeaders 
+    });
+  }
+
+  if (req.method !== "POST") {
+    console.log("Method not allowed:", req.method);
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
   }
 
   try {
     console.log("Processing booking request...");
-    const bookingData: BookingEmailRequest = await req.json();
+    
+    const body = await req.text();
+    console.log("Raw body:", body);
+    
+    const bookingData: BookingEmailRequest = JSON.parse(body);
+    console.log("Parsed booking data:", bookingData);
 
-    console.log("Received booking data:", bookingData);
+    if (!resendApiKey) {
+      throw new Error("Resend API key not configured");
+    }
 
+    console.log("Sending email via Resend...");
     const emailResponse = await resend.emails.send({
       from: "GlydeOn Booking <onboarding@resend.dev>",
       to: ["chayalabhay123@gmail.com"],
@@ -76,7 +101,11 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Email sent successfully:", emailResponse);
 
-    return new Response(JSON.stringify({ success: true, data: emailResponse }), {
+    return new Response(JSON.stringify({ 
+      success: true, 
+      data: emailResponse,
+      message: "Booking email sent successfully"
+    }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -84,9 +113,16 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
   } catch (error: any) {
-    console.error("Error in send-booking-email function:", error);
+    console.error("=== Error in send-booking-email function ===");
+    console.error("Error:", error);
+    console.error("Error message:", error.message);
+    console.error("Error stack:", error.stack);
+    
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: "Check edge function logs for more information"
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -95,4 +131,5 @@ const handler = async (req: Request): Promise<Response> => {
   }
 };
 
+console.log("Starting server...");
 serve(handler);

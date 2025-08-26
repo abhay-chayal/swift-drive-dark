@@ -8,7 +8,7 @@ import { Calendar, MapPin, Clock, CreditCard, ArrowRight, Smartphone, User } fro
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
-import { useToast } from '@/hooks/use-toast';
+import { showPremiumToast } from '@/components/ui/premium-toast';
 const BookingSection = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,9 +21,6 @@ const BookingSection = () => {
     phone: ''
   });
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({
@@ -60,11 +57,7 @@ const BookingSection = () => {
     // Validate form data
     if (!formData.pickupLocation || !formData.dropoffLocation || !formData.pickupDate || !formData.pickupTime || !formData.duration || !formData.phone) {
       console.log('Form validation failed:', formData);
-      toast({
-        title: "Missing Information", 
-        description: "Please fill in all booking details",
-        variant: "destructive"
-      });
+      showPremiumToast("Please fill in all booking details", "error");
       return;
     }
 
@@ -90,12 +83,10 @@ const BookingSection = () => {
       
       if (error) {
         console.error('Supabase function error:', error);
-        throw error;
+        throw new Error(error.message || 'Failed to send booking request');
       }
-      toast({
-        title: "Booking Enquiry Sent!",
-        description: "We've received your booking request. Our team will contact you shortly."
-      });
+      
+      showPremiumToast("Booking Enquiry Sent! We've received your booking request. Our team will contact you shortly.", "success");
 
       // Reset form
       setFormData({
@@ -106,13 +97,9 @@ const BookingSection = () => {
         duration: '',
         phone: ''
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Booking error:', error);
-      toast({
-        title: "Booking Failed",
-        description: "There was an error sending your booking request. Please try again.",
-        variant: "destructive"
-      });
+      showPremiumToast(`Booking Failed: ${error.message || 'There was an error sending your booking request. Please try again.'}`, "error");
     } finally {
       setIsLoading(false);
     }
