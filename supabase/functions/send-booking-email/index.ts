@@ -3,17 +3,6 @@ import { Resend } from "npm:resend@2.0.0";
 
 console.log("Edge function loaded");
 
-const resendApiKey = Deno.env.get("RESEND_API_KEY");
-console.log("Resend API key available:", !!resendApiKey);
-
-let resend: Resend | null = null;
-if (resendApiKey) {
-  resend = new Resend(resendApiKey);
-  console.log("Resend client initialized");
-} else {
-  console.error("RESEND_API_KEY environment variable is not set");
-}
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -37,7 +26,6 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("=== Edge function called ===");
     console.log("Method:", req.method);
     console.log("URL:", req.url);
-    console.log("Headers:", Object.fromEntries(req.headers.entries()));
     
     // Handle CORS preflight requests
     if (req.method === "OPTIONS") {
@@ -47,23 +35,15 @@ const handler = async (req: Request): Promise<Response> => {
         headers: corsHeaders 
       });
     }
-  } catch (error) {
-    console.error("Error in initial request handling:", error);
-    return new Response(JSON.stringify({ error: "Internal server error" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json", ...corsHeaders },
-    });
-  }
 
-  if (req.method !== "POST") {
-    console.log("Method not allowed:", req.method);
-    return new Response(JSON.stringify({ error: "Method not allowed" }), {
-      status: 405,
-      headers: { "Content-Type": "application/json", ...corsHeaders },
-    });
-  }
+    if (req.method !== "POST") {
+      console.log("Method not allowed:", req.method);
+      return new Response(JSON.stringify({ error: "Method not allowed" }), {
+        status: 405,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
 
-  try {
     console.log("Processing booking request...");
     
     const body = await req.text();
@@ -72,9 +52,17 @@ const handler = async (req: Request): Promise<Response> => {
     const bookingData: BookingEmailRequest = JSON.parse(body);
     console.log("Parsed booking data:", bookingData);
 
-    if (!resend) {
+    // Get the API key inside the handler to ensure it's available
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    console.log("Resend API key available:", !!resendApiKey);
+
+    if (!resendApiKey) {
+      console.error("RESEND_API_KEY environment variable is not set");
       throw new Error("Resend API key not configured");
     }
+
+    const resend = new Resend(resendApiKey);
+    console.log("Resend client initialized");
 
     console.log("Sending email via Resend...");
     const emailResponse = await resend.emails.send({
