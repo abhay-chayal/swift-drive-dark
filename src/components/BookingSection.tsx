@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { showPremiumToast } from '@/components/ui/premium-toast';
+import CallNowDialog from '@/components/CallNowDialog';
 const BookingSection = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -246,6 +247,13 @@ const BookingSection = () => {
                     Login/Signup to Book
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>}
+
+                <div className="flex items-center justify-center gap-4 mt-4">
+                  <p className="text-xs text-muted-foreground">
+                    Or call us directly:
+                  </p>
+                  <CallNowDialog />
+                </div>
 
                 <p className="text-xs text-muted-foreground text-center">
                   Instant confirmation • No hidden charges • Cancel anytime

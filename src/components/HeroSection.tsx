@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import premiumSwiftToy from '@/assets/premium-swift-toy.jpg';
+import CallNowDialog from '@/components/CallNowDialog';
 
 const HeroSection = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
@@ -107,14 +108,17 @@ const HeroSection = () => {
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               )}
-              <Button 
-                variant="ghost" 
-                className="btn-ghost text-lg px-10 py-5 group"
-                onClick={() => navigate('/fleet')}
-              >
-                <Play className="w-5 h-5 mr-2" />
-                View Fleet
-              </Button>
+              <div className="flex gap-4">
+                <Button 
+                  variant="ghost" 
+                  className="btn-ghost text-lg px-10 py-5 group"
+                  onClick={() => navigate('/fleet')}
+                >
+                  <Play className="w-5 h-5 mr-2" />
+                  View Fleet
+                </Button>
+                <CallNowDialog />
+              </div>
             </div>
 
             {/* Stats */}
