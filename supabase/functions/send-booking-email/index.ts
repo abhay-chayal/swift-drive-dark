@@ -6,11 +6,13 @@ console.log("Edge function loaded");
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
 console.log("Resend API key available:", !!resendApiKey);
 
-if (!resendApiKey) {
+let resend: Resend | null = null;
+if (resendApiKey) {
+  resend = new Resend(resendApiKey);
+  console.log("Resend client initialized");
+} else {
   console.error("RESEND_API_KEY environment variable is not set");
 }
-
-const resend = new Resend(resendApiKey);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -31,17 +33,25 @@ interface BookingEmailRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  console.log("=== Edge function called ===");
-  console.log("Method:", req.method);
-  console.log("URL:", req.url);
-  console.log("Headers:", Object.fromEntries(req.headers.entries()));
-  
-  // Handle CORS preflight requests
-  if (req.method === "OPTIONS") {
-    console.log("Handling CORS preflight");
-    return new Response(null, { 
-      status: 200,
-      headers: corsHeaders 
+  try {
+    console.log("=== Edge function called ===");
+    console.log("Method:", req.method);
+    console.log("URL:", req.url);
+    console.log("Headers:", Object.fromEntries(req.headers.entries()));
+    
+    // Handle CORS preflight requests
+    if (req.method === "OPTIONS") {
+      console.log("Handling CORS preflight");
+      return new Response(null, { 
+        status: 200,
+        headers: corsHeaders 
+      });
+    }
+  } catch (error) {
+    console.error("Error in initial request handling:", error);
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json", ...corsHeaders },
     });
   }
 
@@ -62,7 +72,7 @@ const handler = async (req: Request): Promise<Response> => {
     const bookingData: BookingEmailRequest = JSON.parse(body);
     console.log("Parsed booking data:", bookingData);
 
-    if (!resendApiKey) {
+    if (!resend) {
       throw new Error("Resend API key not configured");
     }
 
