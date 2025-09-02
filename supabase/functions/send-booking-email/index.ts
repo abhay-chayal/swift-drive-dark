@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "npm:resend@2.0.0";
+import { createTransporter } from "npm:nodemailer@6.9.8";
 
-console.log("Edge function loaded - v2");
+console.log("Edge function loaded - Gmail SMTP");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -52,17 +52,17 @@ const handler = async (req: Request): Promise<Response> => {
     const bookingData: BookingEmailRequest = JSON.parse(body);
     console.log("Parsed booking data:", bookingData);
 
-    // Get the API key inside the handler to ensure it's available
-    const resendApiKey = Deno.env.get("RESEND_API_KEY");
-    console.log("Resend API key available:", !!resendApiKey);
+    // Get Gmail app password
+    const gmailAppPassword = Deno.env.get("GMAIL_APP_PASSWORD");
+    console.log("Gmail app password available:", !!gmailAppPassword);
     console.log("Available env vars:", Object.keys(Deno.env.toObject()));
 
-    if (!resendApiKey) {
-      console.error("RESEND_API_KEY environment variable is not set");
+    if (!gmailAppPassword) {
+      console.error("GMAIL_APP_PASSWORD environment variable is not set");
       return new Response(
         JSON.stringify({ 
-          error: "Resend API key not configured",
-          details: "Please configure RESEND_API_KEY in Supabase secrets"
+          error: "Gmail app password not configured",
+          details: "Please configure GMAIL_APP_PASSWORD in Supabase secrets"
         }),
         {
           status: 500,
@@ -71,13 +71,20 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const resend = new Resend(resendApiKey);
-    console.log("Resend client initialized");
+    // Create Gmail SMTP transporter
+    const transporter = createTransporter({
+      service: 'gmail',
+      auth: {
+        user: 'chayalabhi@gmail.com',
+        pass: gmailAppPassword,
+      },
+    });
+    console.log("Gmail transporter initialized");
 
-    console.log("Sending email via Resend...");
-    const emailResponse = await resend.emails.send({
-      from: "GlydeOn Booking <onboarding@resend.dev>",
-      to: ["chayalabhay123@gmail.com"],
+    console.log("Sending email via Gmail SMTP...");
+    const emailResponse = await transporter.sendMail({
+      from: '"GlydeOn Booking" <chayalabhi@gmail.com>',
+      to: "chayalabhi@gmail.com",
       subject: "New Swift Booking Enquiry",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
