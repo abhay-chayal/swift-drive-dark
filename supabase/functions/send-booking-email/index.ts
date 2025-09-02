@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createTransporter } from "npm:nodemailer@6.9.8";
+import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 
-console.log("Edge function loaded - Gmail SMTP");
+console.log("Edge function loaded - Gmail SMTP via Denomailer");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -71,21 +71,51 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Create Gmail SMTP transporter
-    const transporter = createTransporter({
-      service: 'gmail',
-      auth: {
-        user: 'chayalabhi@gmail.com',
-        pass: gmailAppPassword,
+    // Create Gmail SMTP client
+    const client = new SMTPClient({
+      connection: {
+        hostname: "smtp.gmail.com",
+        port: 587,
+        tls: true,
+        auth: {
+          username: "chayalabhi@gmail.com",
+          password: gmailAppPassword,
+        },
       },
     });
-    console.log("Gmail transporter initialized");
+    console.log("Gmail SMTP client initialized");
 
     console.log("Sending email via Gmail SMTP...");
-    const emailResponse = await transporter.sendMail({
-      from: '"GlydeOn Booking" <chayalabhi@gmail.com>',
+    const emailResponse = await client.send({
+      from: "chayalabhi@gmail.com",
       to: "chayalabhi@gmail.com",
       subject: "New Swift Booking Enquiry",
+      content: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #00d4ff; text-align: center;">New Swift Booking Enquiry</h1>
+          
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="color: #333; margin-bottom: 15px;">Customer Details</h2>
+            <p><strong>Name:</strong> ${bookingData.userName}</p>
+            <p><strong>Email:</strong> ${bookingData.userEmail}</p>
+            <p><strong>Phone:</strong> ${bookingData.phone}</p>
+          </div>
+
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="color: #333; margin-bottom: 15px;">Booking Details</h2>
+            <p><strong>Pickup Location:</strong> ${bookingData.pickupLocation}</p>
+            <p><strong>Drop-off Location:</strong> ${bookingData.dropoffLocation}</p>
+            <p><strong>Pickup Date:</strong> ${bookingData.pickupDate}</p>
+            <p><strong>Pickup Time:</strong> ${bookingData.pickupTime}</p>
+            <p><strong>Rental Duration:</strong> ${bookingData.duration}</p>
+          </div>
+
+          <div style="text-align: center; margin: 30px 0;">
+            <p style="color: #666;">This booking enquiry was submitted through the GlydeOn website.</p>
+            <p style="color: #666;">Please contact the customer to confirm the booking details.</p>
+          </div>
+        </div>
+      `,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #00d4ff; text-align: center;">New Swift Booking Enquiry</h1>
@@ -114,12 +144,15 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
+    await client.close();
+    console.log("Email sent successfully via Gmail SMTP");
+
     console.log("Email sent successfully:", emailResponse);
 
     return new Response(JSON.stringify({ 
       success: true, 
       data: emailResponse,
-      message: "Booking email sent successfully"
+      message: "Booking email sent successfully via Gmail SMTP"
     }), {
       status: 200,
       headers: {
