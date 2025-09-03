@@ -57,11 +57,13 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Available env vars:", Object.keys(Deno.env.toObject()));
 
     if (!resendApiKey) {
-      console.error("RESEND_API_KEY environment variable is not set");
+      console.error("RESEND_API_KEY environment variable is not set or empty");
+      console.error("Key value:", resendApiKey);
       return new Response(
         JSON.stringify({ 
-          error: "Resend API key not configured",
-          details: "Please configure RESEND_API_KEY in Supabase secrets"
+          error: "Resend API key not configured or empty",
+          details: `RESEND_API_KEY value: "${resendApiKey}", length: ${resendApiKey?.length || 0}`,
+          availableKeys: Object.keys(Deno.env.toObject())
         }),
         {
           status: 500,
