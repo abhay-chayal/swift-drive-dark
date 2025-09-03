@@ -1,7 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 
-console.log("Edge function loaded - Gmail SMTP via Denomailer");
+console.log("Edge function loaded - Using Resend API");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -52,17 +51,17 @@ const handler = async (req: Request): Promise<Response> => {
     const bookingData: BookingEmailRequest = JSON.parse(body);
     console.log("Parsed booking data:", bookingData);
 
-    // Get Gmail app password
-    const gmailAppPassword = Deno.env.get("GMAIL_APP_PASSWORD");
-    console.log("Gmail app password available:", !!gmailAppPassword);
+    // Get Resend API key
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    console.log("Resend API key available:", !!resendApiKey);
     console.log("Available env vars:", Object.keys(Deno.env.toObject()));
 
-    if (!gmailAppPassword) {
-      console.error("GMAIL_APP_PASSWORD environment variable is not set");
+    if (!resendApiKey) {
+      console.error("RESEND_API_KEY environment variable is not set");
       return new Response(
         JSON.stringify({ 
-          error: "Gmail app password not configured",
-          details: "Please configure GMAIL_APP_PASSWORD in Supabase secrets"
+          error: "Resend API key not configured",
+          details: "Please configure RESEND_API_KEY in Supabase secrets"
         }),
         {
           status: 500,
@@ -71,88 +70,59 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Create Gmail SMTP client
-    const client = new SMTPClient({
-      connection: {
-        hostname: "smtp.gmail.com",
-        port: 587,
-        tls: true,
-        auth: {
-          username: "chayalabhi@gmail.com",
-          password: gmailAppPassword,
-        },
+    console.log("Sending email via Resend API...");
+    const emailResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json',
       },
-    });
-    console.log("Gmail SMTP client initialized");
+      body: JSON.stringify({
+        from: 'GlydeOn Booking <onboarding@resend.dev>',
+        to: ['chayalabhi@gmail.com'],
+        subject: 'New Swift Booking Enquiry',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #00d4ff; text-align: center;">New Swift Booking Enquiry</h1>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h2 style="color: #333; margin-bottom: 15px;">Customer Details</h2>
+              <p><strong>Name:</strong> ${bookingData.userName}</p>
+              <p><strong>Email:</strong> ${bookingData.userEmail}</p>
+              <p><strong>Phone:</strong> ${bookingData.phone}</p>
+            </div>
 
-    console.log("Sending email via Gmail SMTP...");
-    const emailResponse = await client.send({
-      from: "chayalabhi@gmail.com",
-      to: "chayalabhi@gmail.com",
-      subject: "New Swift Booking Enquiry",
-      content: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #00d4ff; text-align: center;">New Swift Booking Enquiry</h1>
-          
-          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="color: #333; margin-bottom: 15px;">Customer Details</h2>
-            <p><strong>Name:</strong> ${bookingData.userName}</p>
-            <p><strong>Email:</strong> ${bookingData.userEmail}</p>
-            <p><strong>Phone:</strong> ${bookingData.phone}</p>
-          </div>
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h2 style="color: #333; margin-bottom: 15px;">Booking Details</h2>
+              <p><strong>Pickup Location:</strong> ${bookingData.pickupLocation}</p>
+              <p><strong>Drop-off Location:</strong> ${bookingData.dropoffLocation}</p>
+              <p><strong>Pickup Date:</strong> ${bookingData.pickupDate}</p>
+              <p><strong>Pickup Time:</strong> ${bookingData.pickupTime}</p>
+              <p><strong>Rental Duration:</strong> ${bookingData.duration}</p>
+            </div>
 
-          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="color: #333; margin-bottom: 15px;">Booking Details</h2>
-            <p><strong>Pickup Location:</strong> ${bookingData.pickupLocation}</p>
-            <p><strong>Drop-off Location:</strong> ${bookingData.dropoffLocation}</p>
-            <p><strong>Pickup Date:</strong> ${bookingData.pickupDate}</p>
-            <p><strong>Pickup Time:</strong> ${bookingData.pickupTime}</p>
-            <p><strong>Rental Duration:</strong> ${bookingData.duration}</p>
+            <div style="text-align: center; margin: 30px 0;">
+              <p style="color: #666;">This booking enquiry was submitted through the GlydeOn website.</p>
+              <p style="color: #666;">Please contact the customer to confirm the booking details.</p>
+            </div>
           </div>
-
-          <div style="text-align: center; margin: 30px 0;">
-            <p style="color: #666;">This booking enquiry was submitted through the GlydeOn website.</p>
-            <p style="color: #666;">Please contact the customer to confirm the booking details.</p>
-          </div>
-        </div>
-      `,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #00d4ff; text-align: center;">New Swift Booking Enquiry</h1>
-          
-          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="color: #333; margin-bottom: 15px;">Customer Details</h2>
-            <p><strong>Name:</strong> ${bookingData.userName}</p>
-            <p><strong>Email:</strong> ${bookingData.userEmail}</p>
-            <p><strong>Phone:</strong> ${bookingData.phone}</p>
-          </div>
-
-          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="color: #333; margin-bottom: 15px;">Booking Details</h2>
-            <p><strong>Pickup Location:</strong> ${bookingData.pickupLocation}</p>
-            <p><strong>Drop-off Location:</strong> ${bookingData.dropoffLocation}</p>
-            <p><strong>Pickup Date:</strong> ${bookingData.pickupDate}</p>
-            <p><strong>Pickup Time:</strong> ${bookingData.pickupTime}</p>
-            <p><strong>Rental Duration:</strong> ${bookingData.duration}</p>
-          </div>
-
-          <div style="text-align: center; margin: 30px 0;">
-            <p style="color: #666;">This booking enquiry was submitted through the GlydeOn website.</p>
-            <p style="color: #666;">Please contact the customer to confirm the booking details.</p>
-          </div>
-        </div>
-      `,
+        `,
+      }),
     });
 
-    await client.close();
-    console.log("Email sent successfully via Gmail SMTP");
+    if (!emailResponse.ok) {
+      const errorText = await emailResponse.text();
+      console.error("Resend API error:", errorText);
+      throw new Error(`Resend API error: ${emailResponse.status} - ${errorText}`);
+    }
 
-    console.log("Email sent successfully:", emailResponse);
+    const emailResult = await emailResponse.json();
+    console.log("Email sent successfully via Resend API:", emailResult);
 
     return new Response(JSON.stringify({ 
       success: true, 
-      data: emailResponse,
-      message: "Booking email sent successfully via Gmail SMTP"
+      data: emailResult,
+      message: "Booking email sent successfully via Resend API"
     }), {
       status: 200,
       headers: {
