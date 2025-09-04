@@ -63,26 +63,26 @@ const Fleet = () => {
         Back to Home
       </Button>
 
-      <div className="container mx-auto px-6 py-20 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 py-20 relative z-10">
         <div className="flex flex-col items-center justify-center min-h-[80vh] text-center max-w-4xl mx-auto">
           
           {/* Fleet Header */}
           <div className="text-center mb-12 animate-scale-luxury">
-            <div className="inline-flex items-center glass px-6 py-3 rounded-full mb-6">
+            <div className="inline-flex items-center glass px-4 sm:px-6 py-3 rounded-full mb-6">
               <Star className="w-4 h-4 text-accent mr-2" />
-              <span className="text-sm font-medium">Premium Fleet Available</span>
+              <span className="text-xs sm:text-sm font-medium">Premium Fleet Available</span>
             </div>
-            <h1 className="text-6xl lg:text-7xl font-bold leading-tight mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6">
               Our <span className="text-premium">Fleet</span>
             </h1>
-            <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-3xl mx-auto px-4">
               Experience the luxury of our pristine white 2025 Suzuki Swift collection. 
               Each vehicle is meticulously maintained for your premium journey.
             </p>
           </div>
 
           {/* Premium Swift Showcase */}
-          <div className="mb-16 max-w-4xl mx-auto">
+          <div className="mb-16 max-w-4xl mx-auto w-full px-4 sm:px-0">
             <Card className="glass border-0 shadow-elevation overflow-hidden">
               {/* Main Carousel */}
               <div className="relative">
@@ -90,18 +90,18 @@ const Fleet = () => {
                   <CarouselContent>
                     {carImages.map((image, index) => (
                       <CarouselItem key={index}>
-                        <div className="relative overflow-hidden h-96 lg:h-[500px]">
+                        <div className="relative overflow-hidden h-64 sm:h-80 md:h-96 lg:h-[500px]">
                           <img 
                             src={image.src} 
                             alt={image.alt}
                             className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                           />
-                          <div className="absolute top-4 left-4 glass px-4 py-2 rounded-full">
-                            <span className="text-sm font-medium text-primary">Available Now</span>
+                          <div className="absolute top-2 sm:top-4 left-2 sm:left-4 glass px-2 sm:px-4 py-1 sm:py-2 rounded-full">
+                            <span className="text-xs sm:text-sm font-medium text-primary">Available Now</span>
                           </div>
-                          <div className="absolute bottom-4 right-4 glass px-4 py-2 rounded-full">
-                            <span className="text-sm font-medium flex items-center">
-                              <Camera className="w-4 h-4 mr-2" />
+                          <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4 glass px-2 sm:px-4 py-1 sm:py-2 rounded-full">
+                            <span className="text-xs sm:text-sm font-medium flex items-center">
+                              <Camera className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                               {image.label}
                             </span>
                           </div>
@@ -109,19 +109,19 @@ const Fleet = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-4 glass border-0 hover:bg-primary/20" />
-                  <CarouselNext className="right-4 glass border-0 hover:bg-primary/20" />
+                  <CarouselPrevious className="left-2 sm:left-4 glass border-0 hover:bg-primary/20 w-8 h-8 sm:w-10 sm:h-10" />
+                  <CarouselNext className="right-2 sm:right-4 glass border-0 hover:bg-primary/20 w-8 h-8 sm:w-10 sm:h-10" />
                 </Carousel>
                 
                 {/* Image Dots Indicator */}
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-                  <div className="flex space-x-2">
+                <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2">
+                  <div className="flex space-x-1 sm:space-x-2">
                     {carImages.map((_, index) => (
                       <button
                         key={index}
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${
                           index === currentImageIndex 
-                            ? 'bg-primary w-8' 
+                            ? 'bg-primary w-4 sm:w-8' 
                             : 'bg-white/50 hover:bg-white/80'
                         }`}
                         onClick={() => setCurrentImageIndex(index)}
@@ -132,45 +132,45 @@ const Fleet = () => {
               </div>
 
               {/* Car Details */}
-              <CardContent className="p-8">
-                <div className="text-center space-y-6">
+              <CardContent className="p-4 sm:p-6 lg:p-8">
+                <div className="text-center space-y-4 sm:space-y-6">
                   <div>
-                    <h3 className="text-3xl lg:text-4xl font-bold mb-2">2025 Suzuki Swift</h3>
-                    <p className="text-lg text-muted-foreground mb-4">Premium White Edition - License Plate: RJ60CE9319</p>
-                    <div className="inline-flex items-center glass px-4 py-2 rounded-full">
-                      <span className="text-sm font-medium text-primary mr-2">●</span>
-                      <span className="text-sm font-medium">Manual Transmission • Fuel Efficient • Premium Interior</span>
+                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">2025 Suzuki Swift</h3>
+                    <p className="text-sm sm:text-base lg:text-lg text-muted-foreground mb-4">Premium White Edition - License Plate: RJ60CE9319</p>
+                    <div className="inline-flex items-center glass px-3 sm:px-4 py-2 rounded-full">
+                      <span className="text-xs sm:text-sm font-medium text-primary mr-2">●</span>
+                      <span className="text-xs sm:text-sm font-medium">Manual Transmission • Fuel Efficient • Premium Interior</span>
                     </div>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row justify-center items-center gap-8">
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8">
                     <div className="text-center">
-                      <span className="text-4xl font-bold text-premium">₹150</span>
-                      <span className="text-lg text-muted-foreground">/hour</span>
+                      <span className="text-3xl sm:text-4xl font-bold text-premium">₹150</span>
+                      <span className="text-base sm:text-lg text-muted-foreground">/hour</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <div className="flex">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-5 h-5 text-yellow-500 fill-current" />
+                          <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 fill-current" />
                         ))}
                       </div>
-                      <span className="text-lg font-medium ml-2">4.9 (127 reviews)</span>
+                      <span className="text-sm sm:text-base lg:text-lg font-medium ml-2">4.9 (127 reviews)</span>
                     </div>
                   </div>
 
                   {/* Quick Specs */}
-                  <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
-                    <div className="glass p-4 rounded-lg text-center">
-                      <div className="text-lg font-bold text-primary">5</div>
-                      <div className="text-sm text-muted-foreground">Seats</div>
+                  <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-xs sm:max-w-md mx-auto">
+                    <div className="glass p-2 sm:p-4 rounded-lg text-center">
+                      <div className="text-base sm:text-lg font-bold text-primary">5</div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">Seats</div>
                     </div>
-                    <div className="glass p-4 rounded-lg text-center">
-                      <div className="text-lg font-bold text-primary">20</div>
-                      <div className="text-sm text-muted-foreground">km/L</div>
+                    <div className="glass p-2 sm:p-4 rounded-lg text-center">
+                      <div className="text-base sm:text-lg font-bold text-primary">20</div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">km/L</div>
                     </div>
-                    <div className="glass p-4 rounded-lg text-center">
-                      <div className="text-lg font-bold text-primary">Manual</div>
-                      <div className="text-sm text-muted-foreground">Transmission</div>
+                    <div className="glass p-2 sm:p-4 rounded-lg text-center">
+                      <div className="text-base sm:text-lg font-bold text-primary">Manual</div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">Transmission</div>
                     </div>
                   </div>
                 </div>
@@ -179,37 +179,37 @@ const Fleet = () => {
           </div>
 
           {/* Fleet Features */}
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="glass p-8 rounded-2xl text-center space-y-4 animate-float-up">
-              <div className="w-16 h-16 bg-gradient-premium rounded-2xl flex items-center justify-center mx-auto">
-                <Zap className="w-8 h-8 text-primary-foreground" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-16 px-4 sm:px-0">
+            <div className="glass p-6 sm:p-8 rounded-2xl text-center space-y-4 animate-float-up">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-premium rounded-2xl flex items-center justify-center mx-auto">
+                <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
               </div>
-              <h3 className="text-xl font-semibold">Instant Booking</h3>
-              <p className="text-muted-foreground">Book any Swift from our fleet instantly with just one click</p>
+              <h3 className="text-lg sm:text-xl font-semibold">Instant Booking</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">Book any Swift from our fleet instantly with just one click</p>
             </div>
-            <div className="glass p-8 rounded-2xl text-center space-y-4 animate-float-up" style={{ animationDelay: '0.2s' }}>
-              <div className="w-16 h-16 bg-gradient-premium rounded-2xl flex items-center justify-center mx-auto">
-                <Car className="w-8 h-8 text-primary-foreground" />
+            <div className="glass p-6 sm:p-8 rounded-2xl text-center space-y-4 animate-float-up" style={{ animationDelay: '0.2s' }}>
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-premium rounded-2xl flex items-center justify-center mx-auto">
+                <Car className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
               </div>
-              <h3 className="text-xl font-semibold">Premium Maintenance</h3>
-              <p className="text-muted-foreground">Every vehicle is professionally cleaned and serviced</p>
+              <h3 className="text-lg sm:text-xl font-semibold">Premium Maintenance</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">Every vehicle is professionally cleaned and serviced</p>
             </div>
-            <div className="glass p-8 rounded-2xl text-center space-y-4 animate-float-up" style={{ animationDelay: '0.4s' }}>
-              <div className="w-16 h-16 bg-gradient-premium rounded-2xl flex items-center justify-center mx-auto">
-                <Clock className="w-8 h-8 text-primary-foreground" />
+            <div className="glass p-6 sm:p-8 rounded-2xl text-center space-y-4 animate-float-up sm:col-span-2 lg:col-span-1" style={{ animationDelay: '0.4s' }}>
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-premium rounded-2xl flex items-center justify-center mx-auto">
+                <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
               </div>
-              <h3 className="text-xl font-semibold">24/7 Availability</h3>
-              <p className="text-muted-foreground">Access our fleet anytime with round-the-clock service</p>
+              <h3 className="text-lg sm:text-xl font-semibold">24/7 Availability</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">Access our fleet anytime with round-the-clock service</p>
             </div>
           </div>
 
-          <div className="text-center">
+          <div className="text-center px-4 sm:px-0">
             <Button 
-              className="btn-premium text-lg px-12 py-6 group"
+              className="btn-premium text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-6 group w-full sm:w-auto"
               onClick={() => navigate('/')}
             >
               Book Your Swift Now
-              <ArrowLeft className="w-5 h-5 ml-2 rotate-180 group-hover:translate-x-1 transition-transform" />
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 ml-2 rotate-180 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
         </div>

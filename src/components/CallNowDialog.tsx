@@ -28,7 +28,7 @@ const CallNowDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="glass border-primary/20 hover:border-primary/40 text-primary hover:text-primary-foreground hover:bg-primary/10">
+        <Button variant="outline" className="glass border-primary/20 hover:border-primary/40 text-primary hover:text-primary-foreground hover:bg-primary/10 w-full md:w-auto">
           <Phone className="w-4 h-4 mr-2" />
           Call Now
         </Button>

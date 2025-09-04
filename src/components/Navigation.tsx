@@ -4,6 +4,7 @@ import { Menu, X, Car, Phone, MapPin, User, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
+import CallNowDialog from '@/components/CallNowDialog';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,10 +62,7 @@ const Navigation = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="sm">
-              <Phone className="w-4 h-4 mr-2" />
-              Call Now
-            </Button>
+            <CallNowDialog />
             {user ? (
               <div className="flex items-center space-x-2">
                 <Button variant="ghost" size="sm">
@@ -112,10 +110,9 @@ const Navigation = () => {
                 Services
               </a>
               <div className="pt-4 space-y-2">
-                <Button variant="ghost" className="w-full justify-start">
-                  <Phone className="w-4 h-4 mr-2" />
-                  Call Now
-                </Button>
+                <div className="w-full">
+                  <CallNowDialog />
+                </div>
                 {user ? (
                   <div className="space-y-2">
                     <Button variant="ghost" className="w-full justify-start">

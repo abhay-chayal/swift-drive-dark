@@ -34,69 +34,69 @@ const HeroSection = () => {
       <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-floating" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-floating" style={{ animationDelay: '1s' }} />
 
-      <div className="container mx-auto px-6 py-20 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="container mx-auto px-4 sm:px-6 py-20 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Content */}
-          <div className="space-y-8 animate-scale-luxury">
+          <div className="space-y-6 sm:space-y-8 animate-scale-luxury">
             {/* Badge */}
-            <div className="inline-flex items-center glass px-6 py-3 rounded-full animate-luxury-float">
+            <div className="inline-flex items-center glass px-4 sm:px-6 py-3 rounded-full animate-luxury-float">
               <Star className="w-4 h-4 text-accent mr-2" />
-              <span className="text-sm font-medium">CRED-Level Premium Experience</span>
+              <span className="text-xs sm:text-sm font-medium">CRED-Level Premium Experience</span>
             </div>
 
             {/* Headline */}
             <div className="space-y-4">
-              <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
                 Experience Premium{' '}
                 <span className="text-premium">Mobility</span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-lg leading-relaxed">
+              <p className="text-lg sm:text-xl text-muted-foreground max-w-lg leading-relaxed">
                 Where luxury meets convenience. Experience the future of car rentals 
                 with GlydeOn's premium 2025 Swift fleet.
               </p>
             </div>
 
             {/* Features */}
-            <div className="flex flex-wrap gap-6">
+            <div className="flex flex-wrap gap-4 sm:gap-6">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-primary" />
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <Zap className="w-3 h-3 sm:w-5 sm:h-5 text-primary" />
                 </div>
-                <span className="text-sm font-medium">Instant Booking</span>
+                <span className="text-xs sm:text-sm font-medium">Instant Booking</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-primary" />
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <Shield className="w-3 h-3 sm:w-5 sm:h-5 text-primary" />
                 </div>
-                <span className="text-sm font-medium">Full Insurance</span>
+                <span className="text-xs sm:text-sm font-medium">Full Insurance</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-primary" />
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <Clock className="w-3 h-3 sm:w-5 sm:h-5 text-primary" />
                 </div>
-                <span className="text-sm font-medium">24/7 Support</span>
+                <span className="text-xs sm:text-sm font-medium">24/7 Support</span>
               </div>
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col space-y-4">
               {user ? (
                 <Button 
                   type="button"
-                  className="btn-premium text-lg px-10 py-5 group"
+                  className="btn-premium text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group w-full sm:w-auto"
                   onClick={() => {
                     const bookingSection = document.getElementById('booking');
                     bookingSection?.scrollIntoView({ behavior: 'smooth' });
                   }}
                 >
-                  <User className="w-5 h-5 mr-2" />
+                  <User className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   Book Now - {user.email}
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               ) : (
                 <Button 
                   type="button"
-                  className="btn-premium text-lg px-10 py-5 group"
+                  className="btn-premium text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group w-full sm:w-auto"
                   onClick={(e) => {
                     console.log('Hero button clicked');
                     e.preventDefault();
@@ -105,41 +105,43 @@ const HeroSection = () => {
                   }}
                 >
                   Login/Signup
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               )}
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   variant="ghost" 
-                  className="btn-ghost text-lg px-10 py-5 group"
+                  className="btn-ghost text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group w-full sm:w-auto"
                   onClick={() => navigate('/fleet')}
                 >
-                  <Play className="w-5 h-5 mr-2" />
+                  <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   View Fleet
                 </Button>
-                <CallNowDialog />
+                <div className="w-full sm:w-auto">
+                  <CallNowDialog />
+                </div>
               </div>
             </div>
 
             {/* Stats */}
-            <div className="flex gap-8 pt-8 border-t border-border/20">
-              <div>
-                <div className="text-2xl font-bold text-premium">1000+</div>
-                <div className="text-sm text-muted-foreground">Happy Customers</div>
+            <div className="grid grid-cols-3 gap-4 sm:gap-8 pt-6 sm:pt-8 border-t border-border/20">
+              <div className="text-center sm:text-left">
+                <div className="text-xl sm:text-2xl font-bold text-premium">1000+</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Happy Customers</div>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-premium">50+</div>
-                <div className="text-sm text-muted-foreground">Cities</div>
+              <div className="text-center sm:text-left">
+                <div className="text-xl sm:text-2xl font-bold text-premium">50+</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Cities</div>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-premium">24/7</div>
-                <div className="text-sm text-muted-foreground">Support</div>
+              <div className="text-center sm:text-left">
+                <div className="text-xl sm:text-2xl font-bold text-premium">24/7</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Support</div>
               </div>
             </div>
           </div>
 
           {/* Premium Swift Toy Car */}
-          <div className="relative animate-cred-slide">
+          <div className="relative animate-cred-slide mt-8 lg:mt-0">
             <div className="relative z-10">
               <img
                 src={premiumSwiftToy}
@@ -148,17 +150,17 @@ const HeroSection = () => {
               />
               
               {/* Floating Premium Elements */}
-              <div className="absolute -top-8 -left-8 glass p-6 rounded-3xl animate-luxury-float backdrop-blur-md">
-                <div className="text-3xl font-bold text-premium">₹120</div>
-                <div className="text-sm text-muted-foreground">Per Hour</div>
+              <div className="absolute -top-4 sm:-top-8 -left-4 sm:-left-8 glass p-3 sm:p-6 rounded-2xl sm:rounded-3xl animate-luxury-float backdrop-blur-md">
+                <div className="text-2xl sm:text-3xl font-bold text-premium">₹150</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Per Hour</div>
                 <div className="text-xs text-accent">Premium Rate</div>
               </div>
               
-              <div className="absolute -bottom-8 -right-8 glass p-6 rounded-3xl animate-luxury-float backdrop-blur-md" style={{ animationDelay: '2s' }}>
-                <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-accent rounded-full animate-premium-glow" />
+              <div className="absolute -bottom-4 sm:-bottom-8 -right-4 sm:-right-8 glass p-3 sm:p-6 rounded-2xl sm:rounded-3xl animate-luxury-float backdrop-blur-md" style={{ animationDelay: '2s' }}>
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="w-2 h-2 sm:w-3 sm:h-3 bg-accent rounded-full animate-premium-glow" />
                   <div>
-                    <div className="text-sm font-bold">Available Now</div>
+                    <div className="text-xs sm:text-sm font-bold">Available Now</div>
                     <div className="text-xs text-muted-foreground">Premium Fleet</div>
                   </div>
                 </div>
