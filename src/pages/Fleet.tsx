@@ -139,13 +139,13 @@ const Fleet = () => {
                     <p className="text-lg text-muted-foreground mb-4">Premium White Edition - License Plate: RJ60CE9319</p>
                     <div className="inline-flex items-center glass px-4 py-2 rounded-full">
                       <span className="text-sm font-medium text-primary mr-2">●</span>
-                      <span className="text-sm font-medium">Automatic Transmission • Fuel Efficient • Premium Interior</span>
+                      <span className="text-sm font-medium">Manual Transmission • Fuel Efficient • Premium Interior</span>
                     </div>
                   </div>
                   
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-8">
                     <div className="text-center">
-                      <span className="text-4xl font-bold text-premium">₹120</span>
+                      <span className="text-4xl font-bold text-premium">₹150</span>
                       <span className="text-lg text-muted-foreground">/hour</span>
                     </div>
                     <div className="flex items-center space-x-1">
@@ -165,11 +165,11 @@ const Fleet = () => {
                       <div className="text-sm text-muted-foreground">Seats</div>
                     </div>
                     <div className="glass p-4 rounded-lg text-center">
-                      <div className="text-lg font-bold text-primary">23</div>
+                      <div className="text-lg font-bold text-primary">20</div>
                       <div className="text-sm text-muted-foreground">km/L</div>
                     </div>
                     <div className="glass p-4 rounded-lg text-center">
-                      <div className="text-lg font-bold text-primary">Auto</div>
+                      <div className="text-lg font-bold text-primary">Manual</div>
                       <div className="text-sm text-muted-foreground">Transmission</div>
                     </div>
                   </div>
