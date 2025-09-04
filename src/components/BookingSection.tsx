@@ -126,139 +126,35 @@ const BookingSection = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Booking Form */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Book Now Button Card */}
           <Card className="glass border-0 shadow-elevation">
-            <CardContent className="p-8">
-              <h3 className="text-2xl font-bold mb-6 text-center">Reserve Your Swift</h3>
+            <CardContent className="p-8 text-center">
+              <h3 className="text-3xl font-bold mb-6">Ready to Book Your Swift?</h3>
+              <p className="text-lg text-muted-foreground mb-8">
+                Click below to fill out our simple booking form and we'll get back to you within 24 hours.
+              </p>
               
-              <div className="space-y-6">
-                {/* Location Selection */}
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="pickup" className="flex items-center text-sm font-medium">
-                      <MapPin className="w-4 h-4 mr-2 text-primary" />
-                      Pickup Location
-                    </Label>
-                    <Select value={formData.pickupLocation} onValueChange={value => handleInputChange('pickupLocation', value)}>
-                      <SelectTrigger className="bg-muted/50 border-border/20">
-                        <SelectValue placeholder="Select pickup city" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="malviya-nagar">Malviya Nagar, Jaipur</SelectItem>
-                        <SelectItem value="c-scheme">C-Scheme, Jaipur</SelectItem>
-                        <SelectItem value="vaishali-nagar">Vaishali Nagar, Jaipur</SelectItem>
-                        <SelectItem value="kukas">Kukas, Jaipur</SelectItem>
-                        <SelectItem value="mansarovar">Mansarovar, Jaipur</SelectItem>
-                        <SelectItem value="jaipur-airport">Jaipur Airport</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="dropoff" className="flex items-center text-sm font-medium">
-                      <MapPin className="w-4 h-4 mr-2 text-primary" />
-                      Drop-off Location
-                    </Label>
-                    <Select value={formData.dropoffLocation} onValueChange={value => handleInputChange('dropoffLocation', value)}>
-                      <SelectTrigger className="bg-muted/50 border-border/20">
-                        <SelectValue placeholder="Select drop-off city" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="malviya-nagar">Malviya Nagar, Jaipur</SelectItem>
-                        <SelectItem value="c-scheme">C-Scheme, Jaipur</SelectItem>
-                        <SelectItem value="vaishali-nagar">Vaishali Nagar, Jaipur</SelectItem>
-                        <SelectItem value="kukas">Kukas, Jaipur</SelectItem>
-                        <SelectItem value="mansarovar">Mansarovar, Jaipur</SelectItem>
-                        <SelectItem value="jaipur-airport">Jaipur Airport</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                {/* Date and Time Selection */}
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="pickup-date" className="flex items-center text-sm font-medium">
-                      <Calendar className="w-4 h-4 mr-2 text-primary" />
-                      Pickup Date
-                    </Label>
-                    <Input type="date" id="pickup-date" value={formData.pickupDate} onChange={e => handleInputChange('pickupDate', e.target.value)} className="bg-muted/50 border-border/20" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="pickup-time" className="flex items-center text-sm font-medium">
-                      <Clock className="w-4 h-4 mr-2 text-primary" />
-                      Pickup Time
-                    </Label>
-                    <Select value={formData.pickupTime} onValueChange={value => handleInputChange('pickupTime', value)}>
-                      <SelectTrigger className="bg-muted/50 border-border/20">
-                        <SelectValue placeholder="Select time" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="09:00">09:00 AM</SelectItem>
-                        <SelectItem value="12:00">12:00 PM</SelectItem>
-                        <SelectItem value="15:00">03:00 PM</SelectItem>
-                        <SelectItem value="18:00">06:00 PM</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                {/* Duration */}
-                <div className="space-y-2">
-                  <Label htmlFor="duration" className="flex items-center text-sm font-medium">
-                    <Clock className="w-4 h-4 mr-2 text-primary" />
-                    Rental Duration
-                  </Label>
-                  <Select value={formData.duration} onValueChange={value => handleInputChange('duration', value)}>
-                    <SelectTrigger className="bg-muted/50 border-border/20">
-                      <SelectValue placeholder="Select duration" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="4 Hours - ₹480">4 Hours - ₹480</SelectItem>
-                      <SelectItem value="8 Hours - ₹960">8 Hours - ₹960</SelectItem>
-                      <SelectItem value="1 Day (24 Hours) - ₹2,880">1 Day (24 Hours) - ₹2,880</SelectItem>
-                      <SelectItem value="3 Days - ₹8,640">3 Days - ₹8,640</SelectItem>
-                      <SelectItem value="1 Week - ₹20,160">1 Week - ₹20,160</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Contact Information */}
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-sm font-medium">Phone Number</Label>
-                    <Input type="tel" id="phone" value={formData.phone} onChange={e => handleInputChange('phone', e.target.value)} placeholder="+91 98765 43210" className="bg-muted/50 border-border/20" />
-                  </div>
-                </div>
-
-                {/* Book Button */}
-                {user ? <Button type="button" className="btn-premium w-full text-lg py-6 group" onClick={handleBooking} disabled={isLoading}>
-                    <CreditCard className="w-5 h-5 mr-2" />
-                    {isLoading ? 'Sending...' : 'Book Now'}
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button> : <Button type="button" className="btn-premium w-full text-lg py-6 group" onClick={e => {
-                console.log('Booking button clicked');
-                e.preventDefault();
-                e.stopPropagation();
-                navigate('/auth');
-              }}>
-                    Login/Signup to Book
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>}
-
-                <div className="flex items-center justify-center gap-4 mt-4">
-                  <p className="text-xs text-muted-foreground">
-                    Or call us directly:
-                  </p>
-                  <CallNowDialog />
-                </div>
-
-                <p className="text-xs text-muted-foreground text-center">
-                  Instant confirmation • No hidden charges • Cancel anytime
+              <Button 
+                type="button"
+                className="btn-premium text-lg px-12 py-6 group mb-6"
+                onClick={() => navigate('/booking')}
+              >
+                <CreditCard className="w-5 h-5 mr-2" />
+                Book Now
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              
+              <div className="flex items-center justify-center gap-4 mt-4">
+                <p className="text-xs text-muted-foreground">
+                  Or call us directly:
                 </p>
+                <CallNowDialog />
               </div>
+
+              <p className="text-xs text-muted-foreground text-center mt-4">
+                Quick response • No hidden charges • Easy cancellation
+              </p>
             </CardContent>
           </Card>
 
