@@ -8,7 +8,7 @@ import { useState } from 'react';
 // Using existing Swift images as placeholders for the user's uploaded images
 import whiteSwiftFront from '@/assets/white-swift-front.jpg';
 import whiteSwiftSide from '@/assets/2.jpg';
-import whiteSwiftInterior from '@/assets/white-swift-interior.jpg';
+import whiteSwiftInterior from '@/assets/5.jpg';
 import whiteSwift1 from '@/assets/white-swift-1.jpg';
 import swiftHero from '@/assets/swift-2025-hero.jpg';
 
