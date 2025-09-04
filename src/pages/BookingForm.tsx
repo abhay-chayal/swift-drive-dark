@@ -51,10 +51,10 @@ const BookingForm = () => {
       emailjs.init('YOUR_PUBLIC_KEY'); // You'll need to replace this
       
       const result = await emailjs.sendForm(
-        'YOUR_SERVICE_ID', // You'll need to replace this
-        'YOUR_TEMPLATE_ID', // You'll need to replace this
+        'service_17z278h', // You'll need to replace this
+        'template_s0kxq4s', // You'll need to replace this
         form.current!,
-        'YOUR_PUBLIC_KEY' // You'll need to replace this
+        '_lSlupoSLF7HPNp5w' // You'll need to replace this
       );
       
       if (result.status === 200) {
