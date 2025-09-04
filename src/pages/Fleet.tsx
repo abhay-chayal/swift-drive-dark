@@ -9,7 +9,7 @@ import { useState } from 'react';
 import whiteSwiftFront from '@/assets/1.jpg';
 import whiteSwiftSide from '@/assets/2.jpg';
 import whiteSwiftInterior from '@/assets/5.jpg';
-import whiteSwift1 from '@/assets/white-swift-1.jpg';
+import whiteSwift1 from '@/assets/3.jpg';
 import swiftHero from '@/assets/4.jpg';
 
 const Fleet = () => {
