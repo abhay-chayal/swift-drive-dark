@@ -6,7 +6,7 @@ import { ArrowLeft, Car, Clock, Star, Zap, Camera } from 'lucide-react';
 import { useState } from 'react';
 
 // Using existing Swift images as placeholders for the user's uploaded images
-import whiteSwiftFront from '@/assets/white-swift-front.jpg';
+import whiteSwiftFront from '@/assets/1.jpg';
 import whiteSwiftSide from '@/assets/2.jpg';
 import whiteSwiftInterior from '@/assets/5.jpg';
 import whiteSwift1 from '@/assets/white-swift-1.jpg';
